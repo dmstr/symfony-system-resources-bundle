@@ -1,0 +1,31 @@
+{
+    "name": "dmstr/symfony-system-resources-bundle",
+    "description": "Read-only API Platform admin resources for Symfony framework-internal tables: messenger_messages, doctrine_migration_versions.",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "diemeisterei GmbH",
+            "homepage": "https://diemeisterei.de"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "symfony/framework-bundle": "^7.0",
+        "api-platform/symfony": "^4.0",
+        "doctrine/orm": "^3.0",
+        "doctrine/doctrine-bundle": "^2.0",
+        "symfony/messenger": "^7.0",
+        "doctrine/doctrine-migrations-bundle": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dmstr\\SymfonySystemResources\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dmstr\\SymfonySystemResources\\Tests\\": "tests/"
+        }
+    }
+}
