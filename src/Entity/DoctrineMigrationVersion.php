@@ -32,7 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
         new GetCollection(),
     ],
     security: "is_granted('ROLE_ADMIN')",
-    openapi: new Operation(tags: ['ZA7 Core'])
+    openapi: new Operation(tags: ['System'])
 )]
 class DoctrineMigrationVersion
 {

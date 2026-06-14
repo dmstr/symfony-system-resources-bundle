@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
     ],
     security: "is_granted('ROLE_ADMIN')",
     paginationItemsPerPage: 25,
-    openapi: new Operation(tags: ['ZA7 Core'])
+    openapi: new Operation(tags: ['System'])
 )]
 #[ApiFilter(SearchFilter::class, properties: ['queueName' => 'exact'])]
 #[ApiFilter(DateFilter::class, properties: ['createdAt', 'availableAt', 'deliveredAt'])]
