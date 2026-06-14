@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\OpenApi\Model\Operation;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,6 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
     ],
     security: "is_granted('ROLE_ADMIN')",
     paginationItemsPerPage: 25,
+    openapi: new Operation(tags: ['System'])
 )]
 #[ApiFilter(SearchFilter::class, properties: ['queueName' => 'exact'])]
 #[ApiFilter(DateFilter::class, properties: ['createdAt', 'availableAt', 'deliveredAt'])]

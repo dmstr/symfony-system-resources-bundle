@@ -8,6 +8,7 @@ namespace Dmstr\SymfonySystemResources\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\OpenApi\Model\Operation;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
         new GetCollection(),
     ],
     security: "is_granted('ROLE_ADMIN')",
+    openapi: new Operation(tags: ['System'])
 )]
 class DoctrineMigrationVersion
 {
