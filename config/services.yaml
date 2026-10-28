@@ -1,0 +1,13 @@
+# file generated with AI assistance: Claude Code - 2026-10-28 00:56:44
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # No services yet. The next step registers the bundle's permissions here
+    # through the plain string container tag `za7_core.permission` (attribute
+    # `permission`, e.g. `sysres:read`). The tag is a plain string on purpose:
+    # without za7-core nothing collects it, so it has no effect and the bundle
+    # does not depend on za7-core.
