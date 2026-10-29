@@ -1,5 +1,5 @@
 <?php
-// file generated with AI assistance: Claude Code - 2026-10-28 00:56:44
+// file generated with AI assistance: Claude Code - 2026-10-28 00:56:44 UTC
 
 declare(strict_types=1);
 

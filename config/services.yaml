@@ -1,4 +1,4 @@
-# file generated with AI assistance: Claude Code - 2026-10-28 00:56:44
+# file generated with AI assistance: Claude Code - 2026-10-28 00:56:44 UTC
 
 services:
     _defaults:
@@ -6,8 +6,20 @@ services:
         autoconfigure: true
         public: false
 
-    # No services yet. The next step registers the bundle's permissions here
-    # through the plain string container tag `za7_core.permission` (attribute
-    # `permission`, e.g. `sysres:read`). The tag is a plain string on purpose:
-    # without za7-core nothing collects it, so it has no effect and the bundle
-    # does not depend on za7-core.
+    # Registers the bundle's permissions through the plain string container
+    # tag `za7_core.permission` (attribute `permission`). The tag is a plain
+    # string on purpose: without za7-core nothing collects it, so it has no
+    # effect and the bundle does not depend on za7-core.
+    #
+    # The service is only the carrier of the tags and is never instantiated:
+    # it is private and unreferenced, za7-core's compiler pass reads the tags
+    # before the optimization passes, and the container removes it afterwards.
+    # That is why the private constructor of the class is fine. Autowiring is
+    # off so that no compiler pass reflects on that constructor.
+    Dmstr\SymfonySystemResources\Security\SystemResourcesPermissions:
+        autowire: false
+        autoconfigure: false
+        tags:
+            - { name: za7_core.permission, permission: 'sysres:messenger_read' }
+            - { name: za7_core.permission, permission: 'sysres:migration_read' }
+# - revised 2026-10-28 (register the sysres permissions as za7_core.permission tags)
