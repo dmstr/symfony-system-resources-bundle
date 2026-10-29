@@ -15,7 +15,7 @@ Register the bundle in `config/bundles.php`:
 ```php
 return [
     // ...
-    Dmstr\SymfonySystemResources\SystemResourcesBundle::class => ['all' => true],
+    Dmstr\SymfonySystemResources\SymfonySystemResourcesBundle::class => ['all' => true],
 ];
 ```
 
