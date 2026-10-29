@@ -9,7 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Dmstr\SymfonySystemResources\Entity\DoctrineMigrationVersion;
 use Dmstr\SymfonySystemResources\Entity\MessengerMessage;
 use Dmstr\SymfonySystemResources\Security\SystemResourcesPermissions;
-use Dmstr\SymfonySystemResources\SystemResourcesBundle;
+use Dmstr\SymfonySystemResources\SymfonySystemResourcesBundle;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\FileLocator;
@@ -110,7 +110,7 @@ final class ServicesConfigurationTest extends TestCase
 
     public function testExtensionAlias(): void
     {
-        $extension = (new SystemResourcesBundle())->getContainerExtension();
+        $extension = (new SymfonySystemResourcesBundle())->getContainerExtension();
 
         self::assertNotNull($extension);
         self::assertSame('dmstr_symfony_system_resources', $extension->getAlias());
