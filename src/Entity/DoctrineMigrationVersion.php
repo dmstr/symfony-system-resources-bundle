@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\OpenApi\Model\Operation;
+use Dmstr\SymfonySystemResources\Security\SystemResourcesPermissions;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,7 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
         new Get(),
         new GetCollection(),
     ],
-    security: "is_granted('ROLE_ADMIN')",
+    security: "is_granted('" . SystemResourcesPermissions::MIGRATION_READ . "')",
     openapi: new Operation(tags: ['System'])
 )]
 class DoctrineMigrationVersion
@@ -61,3 +62,4 @@ class DoctrineMigrationVersion
         return $this->executionTime;
     }
 }
+// - revised 2026-10-28 (security expression checks the sysres:migration_read permission)
