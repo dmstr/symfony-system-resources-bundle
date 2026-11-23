@@ -35,14 +35,29 @@ Both resources offer item and collection reads only and appear under the OpenAPI
 | `/api/admin/messenger_messages` | `MessengerMessage` | `sysres:messenger_read` |
 | `/api/admin/migration_versions` | `DoctrineMigrationVersion` | `sysres:migration_read` |
 
+### Pruning Messenger messages
+
+The Doctrine transport deletes a message once it is handled. What accumulates in `messenger_messages` is mostly the failure transport's queue: every failed message with its stack trace. Three entry points delete the messages of **one** queue created more than `days` days ago (default 30):
+
+| Entry point | Input |
+|---|---|
+| `POST /api/admin/messenger_messages/prune` (operation `messenger_message_prune`, permission `sysres:messenger_prune`) | `{"queueName": "failed", "days": 30, "dryRun": false}`, schema `src/Entity/MessengerMessage/prune.input.json`, published as the OpenAPI request body |
+| `bin/console app:messenger-messages:prune --queue=failed --days=30 [--dry-run]` | validated against the same schema |
+| message `Dmstr\SymfonySystemResources\Message\PruneMessengerMessages('failed', days: 30)` | for the application's scheduler |
+
+`queueName` is required and has no default: pruning a working queue deletes work that was never done. If a working queue grows, the workers do not keep up; that is not solved by pruning.
+
+On MySQL the first run on a large table writes every deleted row to the binary log; check the free disk space and start with a dry run. `OPTIMIZE TABLE messenger_messages` returns the freed space to the file system afterwards.
+
 ## Permissions
 
-Access is checked against two permission attributes, not against a role:
+Access is checked against three permission attributes, not against a role:
 
 - `sysres:messenger_read` for the Messenger messages
 - `sysres:migration_read` for the migration versions
+- `sysres:messenger_prune` for deleting old messages of a queue
 
-The constants are `Dmstr\SymfonySystemResources\Security\SystemResourcesPermissions::MESSENGER_READ` and `::MIGRATION_READ`. The bundle registers both attributes at the container tag `za7_core.permission`. The voter that decides them and the map from permission to roles come from `hrzg/za7-core`; this bundle has no dependency on za7-core, no configuration of its own and no default map. Which roles may read is therefore decided by the application:
+The constants are `Dmstr\SymfonySystemResources\Security\SystemResourcesPermissions::MESSENGER_READ`, `::MIGRATION_READ` and `::MESSENGER_PRUNE`. The bundle registers the attributes at the container tag `za7_core.permission`. The voter that decides them and the map from permission to roles come from `hrzg/za7-core`; this bundle has no dependency on za7-core, no configuration of its own and no default map. Which roles may read is therefore decided by the application:
 
 ```yaml
 # config/packages/za7_core.yaml
@@ -50,11 +65,12 @@ za7_core:
     permissions:
         sysres:messenger_read: [<your-admin-role>]
         sysres:migration_read: [<your-admin-role>]
+        sysres:messenger_prune: [<your-admin-role>]
 ```
 
 ## Running without za7-core
 
-Without za7-core you need your own security voter that supports `sysres:messenger_read` and `sysres:migration_read`. If no voter handles the attributes, every request is denied with 403, administrators included.
+Without za7-core you need your own security voter that supports `sysres:messenger_read`, `sysres:migration_read` and `sysres:messenger_prune`. If no voter handles the attributes, every request is denied with 403, administrators included.
 
 ## Upgrading from 0.2.x
 

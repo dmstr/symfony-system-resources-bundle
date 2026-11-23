@@ -20,6 +20,7 @@ final class SystemResourcesPermissions
 {
     public const string MESSENGER_READ = 'sysres:messenger_read';
     public const string MIGRATION_READ = 'sysres:migration_read';
+    public const string MESSENGER_PRUNE = 'sysres:messenger_prune';
 
     private function __construct()
     {
