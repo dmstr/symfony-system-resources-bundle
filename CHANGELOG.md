@@ -4,6 +4,18 @@
 
 All notable changes to this bundle. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org/) and come from the Git tags.
 
+## [0.5.0] - 2026-11-24
+
+### Added
+
+- Pruning of Messenger messages per queue: `POST /api/admin/messenger_messages/prune` (operation `messenger_message_prune`, input schema `src/Entity/MessengerMessage/prune.input.json` with the required `queueName`, `days`, default 30, and `dryRun`), its CLI mirror `app:messenger-messages:prune --queue --days --dry-run` and the message `PruneMessengerMessages` for a scheduler. Deletes in batches; the queue is always explicit.
+- Permission `sysres:messenger_prune`, registered for za7-core next to the read permissions.
+- The bundle registers its own input-schema resolver (`dmstr_system_resources.input_schema_resolver`) for the schemas next to its entities.
+
+### Changed
+
+- Requires `dmstr/openapi-json-schema-bundle` ^0.5.0 (`InputSchemaValidator`) and `symfony/console`; the test runner installs `pdo_sqlite`.
+
 ## [0.4.0] - 2026-10-29
 
 ### Changed

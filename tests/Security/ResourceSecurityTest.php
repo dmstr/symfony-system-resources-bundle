@@ -10,6 +10,7 @@ use ApiPlatform\Symfony\Security\ResourceAccessChecker;
 use Dmstr\SymfonySystemResources\Entity\DoctrineMigrationVersion;
 use Dmstr\SymfonySystemResources\Entity\MessengerMessage;
 use Dmstr\SymfonySystemResources\Security\SystemResourcesPermissions;
+use Dmstr\SymfonySystemResources\State\MessengerMessagePruneProcessor;
 use Dmstr\SymfonySystemResources\Tests\Fixtures\MapPermissionVoter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -88,13 +89,21 @@ final class ResourceSecurityTest extends TestCase
 
     /** @param class-string $class */
     #[DataProvider('resources')]
-    public function testOperationsDoNotOverrideTheSecurity(string $class, string $permission): void
+    public function testOnlyThePruneOperationOverridesTheSecurity(string $class, string $permission): void
     {
         $operations = self::resource($class)->getOperations();
 
         self::assertNotNull($operations);
         self::assertGreaterThan(0, \count($operations));
         foreach ($operations as $name => $operation) {
+            // The prune operation deletes and needs its own permission
+            if ($operation->getName() === MessengerMessagePruneProcessor::OPERATION) {
+                self::assertSame(
+                    "is_granted('" . SystemResourcesPermissions::MESSENGER_PRUNE . "')",
+                    $operation->getSecurity()
+                );
+                continue;
+            }
             self::assertNull($operation->getSecurity(), \sprintf('%s operation %s', $class, $name));
         }
     }

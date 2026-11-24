@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Prune Messenger messages",
+    "description": "Deletes the messages of one queue created more than `days` days ago. The queue is required so that a working queue is never emptied by default; usually it is `failed`.",
+    "type": "object",
+    "properties": {
+        "queueName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 190,
+            "examples": ["failed"],
+            "description": "Queue to prune (`queue_name`), e.g. the failure transport's queue"
+        },
+        "days": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 30,
+            "description": "Keep messages younger than this many days"
+        },
+        "dryRun": {
+            "type": "boolean",
+            "default": false,
+            "description": "Only count the messages that would be deleted"
+        }
+    },
+    "required": ["queueName"],
+    "additionalProperties": false
+}

@@ -22,4 +22,29 @@ services:
         tags:
             - { name: za7_core.permission, permission: 'sysres:messenger_read' }
             - { name: za7_core.permission, permission: 'sysres:migration_read' }
+            - { name: za7_core.permission, permission: 'sysres:messenger_prune' }
+
+    # Retention of Messenger messages per queue: REST operation, CLI mirror
+    # and a message for the application's scheduler share the pruner.
+    Dmstr\SymfonySystemResources\Service\MessengerMessagePruner: ~
+
+    Dmstr\SymfonySystemResources\State\MessengerMessagePruneProcessor:
+        tags: ['api_platform.state_processor']
+
+    Dmstr\SymfonySystemResources\Command\PruneMessengerMessagesCommand:
+        tags: ['console.command']
+
+    Dmstr\SymfonySystemResources\MessageHandler\PruneMessengerMessagesHandler:
+        tags: [messenger.message_handler]
+
+    # Input schemas next to the entities (Entity/MessengerMessage/prune.input.json)
+    # for the OpenAPI request body and the validation of REST and CLI input.
+    dmstr_system_resources.input_schema_resolver:
+        class: Dmstr\OpenApiJsonSchema\Service\OperationInputSchemaResolver
+        arguments:
+            $schemaBasePaths: []
+            $entityResolutionRoots:
+                - ['%dmstr_system_resources.dir%/src/Entity', 'Dmstr\SymfonySystemResources\Entity']
+        tags:
+            - { name: dmstr_openapi_json_schema.input_resolver, priority: 10 }
 # - revised 2026-10-28 (register the sysres permissions as za7_core.permission tags)

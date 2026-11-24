@@ -43,7 +43,7 @@ final class ServicesConfigurationTest extends TestCase
         $tagged = $this->loadServices()->findTaggedServiceIds(self::PERMISSION_TAG);
 
         self::assertSame([SystemResourcesPermissions::class], array_keys($tagged));
-        self::assertCount(2, $tagged[SystemResourcesPermissions::class]);
+        self::assertCount(3, $tagged[SystemResourcesPermissions::class]);
     }
 
     public function testTaggedPermissionsAreTheBundleConstants(): void
@@ -52,6 +52,7 @@ final class ServicesConfigurationTest extends TestCase
             [
                 SystemResourcesPermissions::MESSENGER_READ,
                 SystemResourcesPermissions::MIGRATION_READ,
+                SystemResourcesPermissions::MESSENGER_PRUNE,
             ],
             $this->taggedPermissions(),
         );
@@ -167,6 +168,12 @@ final class ServicesConfigurationTest extends TestCase
             self::assertNotEmpty($matches[1], \sprintf('%s has no is_granted() check.', $class));
 
             array_push($permissions, ...$matches[1]);
+
+            // Operations with their own check (the write operations)
+            foreach ($attributes[0]->newInstance()->getOperations() ?? [] as $operation) {
+                preg_match_all("/is_granted\\('([^']*)'\\)/", $operation->getSecurity() ?? '', $matches);
+                array_push($permissions, ...$matches[1]);
+            }
         }
 
         return $permissions;
