@@ -4,6 +4,12 @@
 
 All notable changes to this bundle. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org/) and come from the Git tags.
 
+## [0.5.1] - 2026-11-26
+
+### Changed
+
+- Requires `dmstr/openapi-json-schema-bundle` ^0.6.0 (was ^0.5.0). The bundle only uses `InputSchemaValidator` and `OperationInputSchemaResolver`, which are unchanged in 0.6.0, so there is no behaviour change in this bundle.
+
 ## [0.5.0] - 2026-11-24
 
 ### Added
