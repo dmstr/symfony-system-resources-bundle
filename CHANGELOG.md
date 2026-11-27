@@ -4,6 +4,12 @@
 
 All notable changes to this bundle. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org/) and come from the Git tags.
 
+## [0.6.0] - 2026-11-27
+
+### Changed
+
+- The prune operation `POST /api/admin/messenger_messages/prune` (operation `messenger_message_prune`) now carries `extraProperties: ['custom_action' => true]`. Applications on `dmstr/api-platform-utils-bundle` 0.8, which classifies custom actions by this marker only ([0.8.0 changelog](https://github.com/dmstr/api-platform-utils-bundle/blob/0.8.0/CHANGELOG.md#080-2026-11-26)), get the prune action back in the Hydra documentation (`schema:Action`) and thereby in an admin UI's actions menu; under 0.6 and 0.7 the key is ignored and nothing changes. Pruning itself is unchanged, and the bundle still does not require api-platform-utils-bundle.
+
 ## [0.5.1] - 2026-11-26
 
 ### Changed
@@ -77,3 +83,5 @@ Use the za7-core release that ships the permission voter, map `sysres:messenger_
 [0.2.0]: https://github.com/dmstr/symfony-system-resources-bundle/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/dmstr/symfony-system-resources-bundle/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/dmstr/symfony-system-resources-bundle/releases/tag/0.1.0
+
+<!-- - revised 2026-11-27 (release 0.6.0) -->
