@@ -51,6 +51,9 @@ use Doctrine\ORM\Mapping as ORM;
             normalizationContext: ['groups' => [PruneResult::GROUP]],
             status: 200,
             security: "is_granted('" . SystemResourcesPermissions::MESSENGER_PRUNE . "')",
+            // Marks the operation as custom action for consumers that
+            // classify by this key (api-platform-utils-bundle 0.8+)
+            extraProperties: ['custom_action' => true],
         ),
     ],
     security: "is_granted('" . SystemResourcesPermissions::MESSENGER_READ . "')",
@@ -122,3 +125,4 @@ class MessengerMessage
     }
 }
 // - revised 2026-10-28 (security expression checks the sysres:messenger_read permission)
+// - revised 2026-11-27 (mark the prune operation as custom action)

@@ -45,6 +45,8 @@ The Doctrine transport deletes a message once it is handled. What accumulates in
 | `bin/console app:messenger-messages:prune --queue=failed --days=30 [--dry-run]` | validated against the same schema |
 | message `Dmstr\SymfonySystemResources\Message\PruneMessengerMessages('failed', days: 30)` | for the application's scheduler |
 
+`POST /api/admin/messenger_messages/prune` carries `extraProperties: ['custom_action' => true]`, so consumers that classify custom actions by this marker (api-platform-utils-bundle 0.8 and later) keep listing it as an action in the Hydra documentation.
+
 `queueName` is required and has no default: pruning a working queue deletes work that was never done. If a working queue grows, the workers do not keep up; that is not solved by pruning.
 
 On MySQL the first run on a large table writes every deleted row to the binary log; check the free disk space and start with a dry run. `OPTIMIZE TABLE messenger_messages` returns the freed space to the file system afterwards.
@@ -91,3 +93,4 @@ docker compose run --rm php
 MIT © diemeisterei GmbH
 
 <!-- - revised 2026-10-28 (0.3.0: permission attributes, rewrite) -->
+<!-- - revised 2026-11-27 (prune operation named as marked custom action) -->
